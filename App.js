@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, FlatList, Alert, TouchableWithoutFeedback, Keyboard} from 'react-native';
 
+
 import Header from './components/Header';
 import TodoItem from './components/TodoItem';
 import AddTodo from './components/AddTodo';
@@ -42,7 +43,7 @@ export default function App() {
         }}>
             <View style={styles.container}>
                 <Header/>
-                <View stylee={styles.content}>
+                <View style={styles.content}>
                     <AddTodo submitHandler={submitHandler}/>
                     <View style={styles.list}>
                         <FlatList
@@ -65,8 +66,10 @@ const styles = StyleSheet.create({
     },
     content: {
         padding: 40,
+        flex: 1
     },
     list: {
         marginTop: 20,
+        flex: 1
     },
 });
