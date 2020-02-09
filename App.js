@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, FlatList, Alert, TouchableWithoutFeedback, Keyboard} from 'react-native';
 
 import Header from './components/Header';
 import TodoItem from './components/TodoItem';
@@ -8,9 +8,9 @@ import AddTodo from './components/AddTodo';
 
 export default function App() {
     const [todos, setTodos] = useState([
-        { text: 'buy coffee', key: '1' },
-        { text: 'create an app', key: '2' },
-        { text: 'play on the switch', key: '3' },
+        {text: 'buy coffee', key: '1'},
+        {text: 'create an app', key: '2'},
+        {text: 'play on the switch', key: '3'},
     ]);
 
     const pressHandler = key => {
@@ -20,30 +20,41 @@ export default function App() {
     };
 
     const submitHandler = (text) => {
-        setTodos((prevTodos) => {
-            return [
-                {text: text, id: todos.length + 1},
-                ...prevTodos
-            ]
-        })
+        if (text.length > 3) {
+            setTodos((prevTodos) => {
+                return [
+                    {text: text, id: todos.length + 1},
+                    ...prevTodos
+                ]
+            })
+        } else {
+            Alert.alert("INVALID!", "Item must be over 3 characters", [
+                {text: "OK", onPress: () => console.log("Alert closed")}
+            ])
+        }
 
     };
 
     return (
-        <View style={styles.container}>
-            <Header />
-            <View stylee={styles.content}>
-                <AddTodo submitHandler={submitHandler} />
-                <View style={styles.list}>
-                    <FlatList
-                        data={todos}
-                        renderItem={({ item }) => (
-                            <TodoItem item={item} pressHandler={pressHandler} />
-                        )}
-                    />
+        <TouchableWithoutFeedback onPress={() => {
+            console.log("Dismissed keyboard");
+            Keyboard.dismiss();
+        }}>
+            <View style={styles.container}>
+                <Header/>
+                <View stylee={styles.content}>
+                    <AddTodo submitHandler={submitHandler}/>
+                    <View style={styles.list}>
+                        <FlatList
+                            data={todos}
+                            renderItem={({item}) => (
+                                <TodoItem item={item} pressHandler={pressHandler}/>
+                            )}
+                        />
+                    </View>
                 </View>
             </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 }
 
